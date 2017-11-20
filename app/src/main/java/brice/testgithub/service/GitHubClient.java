@@ -16,9 +16,9 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 
-public interface UserClient {
+public interface GitHubClient {
 
-    @Headers("Accept: application/json")
+    @Headers("Accept: application/json") //retrofit2 will specify to github that we want json datas
     @POST("login/oauth/access_token")
     @FormUrlEncoded
     Call<AccessToken> getAccessToken(

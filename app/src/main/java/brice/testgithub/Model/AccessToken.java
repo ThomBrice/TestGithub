@@ -13,7 +13,7 @@ public class AccessToken {
     @SerializedName("access_token")
     private String accessToken;
 
-    @SerializedName("access_type")
+    @SerializedName("token_type")
     private String tokenType;
 
     public String getAccessToken() {
