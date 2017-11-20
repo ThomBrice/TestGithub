@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import brice.testgithub.Model.AccessToken;
+import brice.testgithub.Model.TokenStore;
 import brice.testgithub.service.GitHubClient;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(Call<AccessToken> call, Response<AccessToken> response) {
                         Toast.makeText(LoginActivity.this, "yes", Toast.LENGTH_SHORT).show();
+                        TokenStore.getInstance(LoginActivity.this).saveToken(response.body().getAccessToken()); // the token is stored to avoid the user to register everytime
                         startActivity(new Intent(LoginActivity.this,MainActivity.class));
                     }
 
@@ -79,7 +81,7 @@ public class LoginActivity extends AppCompatActivity {
                 Intent.ACTION_VIEW,
                 Uri.parse("https://github.com/login/oauth/authorize" +
                         "?client_id=" + clientId +
-                        "&scope=repo" + // because we only need to have the information of repositories
+                        "&scope=repo,delete_repo" + // because we only need to have the information of repositories
                         "&redirect_uri=" + redirectUri));
         startActivity(intent);
     }
