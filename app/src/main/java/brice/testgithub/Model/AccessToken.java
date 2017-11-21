@@ -16,11 +16,18 @@ public class AccessToken {
     @SerializedName("token_type")
     private String tokenType;
 
+    @SerializedName("scope")
+    private String scope;
+
     public String getAccessToken() {
         return accessToken;
     }
 
     public String getTokenType() {
         return tokenType;
+    }
+
+    public String getScope(){
+        return scope;
     }
 }
