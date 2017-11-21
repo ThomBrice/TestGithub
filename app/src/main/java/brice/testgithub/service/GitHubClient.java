@@ -9,14 +9,14 @@ package brice.testgithub.service;
 import java.util.List;
 
 import brice.testgithub.Model.AccessToken;
+import brice.testgithub.Model.Contributor;
 import brice.testgithub.Model.Repository;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
@@ -33,21 +33,35 @@ public interface GitHubClient {
     @Headers("Accept: application/json") //retrofit2 will specify to github that we want json datas
     @POST("login/oauth/access_token")
     @FormUrlEncoded
-    Call<AccessToken> getAccessToken(
+    Call<AccessToken> getAccessToken(  //get the Token
             @Field("client_id") String clientId,
             @Field("client_secret") String clientSecret,
             @Field("code") String code
     );
 
-    @GET("/users/{user}/repos")
-    Call<List<Repository>> reposForUser(@Path("user") String user);
+    @GET("/users/{user}/repos")   // get all user's repos
+    Call<List<Repository>> reposForUser(
+            @Path("user") String user
+    );
 
-    @POST("/search/repositories")
-    Call<List<Repository>> searchRepos(@Field("q") String query);
+    @GET("/search/repositories")  //search for repo(s)
+    Call<List<Repository>> searchRepos(
+            @Query("q") String query
+    );
 
-    @POST("/user/repos")
+    @POST("/user/repos")  // create a new repo
     Call<Repository> createNewRepo(
             @Body Repository repository
     );
 
+    @DELETE("/repos/{user}/{repo}") //delete a repo
+    Call<String> deleteRepository(
+            @Path("user") String user,
+            @Path("repo") String repo
+    );
+
+    @GET("/repos/{owner}/{repo}/contributors") // get contributors of a repo
+    Call<List<Contributor>> contributors(
+            @Path("owner") String owner,
+            @Path("repo") String repo);
 }

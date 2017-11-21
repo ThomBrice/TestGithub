@@ -7,6 +7,7 @@ package brice.testgithub.ui;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -32,11 +33,14 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class DepotFragment extends Fragment {
+public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
+    private SwipeRefreshLayout swipeRefreshLayout;
+
+    GitHubClient  client = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -48,6 +52,52 @@ public class DepotFragment extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(layoutManager);
 
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+
+        getListRepositories();
+
+        return view;
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int position = -1;
+        try {
+            position = ((RepositoryAdapter)adapter).getPosition();
+        } catch (Exception e) {
+            return super.onContextItemSelected(item);
+        }
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                if (client != null){
+                    (client.deleteRepository("ThomBrice", "testDelete")).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            response.body();
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+                }
+                break;
+            case R.id.action_rename:
+                Toast.makeText(getContext(),R.string.action_rename,Toast.LENGTH_SHORT).show();
+                break;
+        }
+        return super.onContextItemSelected(item);
+    }
+
+    @Override
+    public void onRefresh() {
+        getListRepositories();
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
+    public void getListRepositories(){
         OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
         okHttpBuilder.addInterceptor(new Interceptor() {
             @Override
@@ -65,7 +115,7 @@ public class DepotFragment extends Fragment {
 
         Retrofit retrofit = builder.build();
 
-        GitHubClient client = retrofit.create(GitHubClient.class);
+        client = retrofit.create(GitHubClient.class);
         Call<List<Repository>> call = client.reposForUser("ThomBrice");
 
         call.enqueue(new Callback<List<Repository>>() {
@@ -75,6 +125,7 @@ public class DepotFragment extends Fragment {
 
                 adapter = new RepositoryAdapter(repos);
                 recyclerView.setAdapter(adapter);
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -82,27 +133,5 @@ public class DepotFragment extends Fragment {
                 Toast.makeText(getActivity(),"error", Toast.LENGTH_SHORT).show();
             }
         });
-
-
-        return view;
-    }
-
-    @Override
-    public boolean onContextItemSelected(MenuItem item) {
-        int position = -1;
-        try {
-            position = ((RepositoryAdapter)adapter).getPosition();
-        } catch (Exception e) {
-            return super.onContextItemSelected(item);
-        }
-        switch (item.getItemId()) {
-            case R.id.action_delete:
-                Toast.makeText(getContext(),R.string.action_delete,Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.action_rename:
-                Toast.makeText(getContext(),R.string.action_rename,Toast.LENGTH_SHORT).show();
-                break;
-        }
-        return super.onContextItemSelected(item);
     }
 }
