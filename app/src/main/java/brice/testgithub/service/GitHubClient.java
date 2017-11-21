@@ -12,6 +12,7 @@ import brice.testgithub.Model.AccessToken;
 import brice.testgithub.Model.Repository;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -19,6 +20,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface GitHubClient {
 
@@ -40,16 +42,12 @@ public interface GitHubClient {
     @GET("/users/{user}/repos")
     Call<List<Repository>> reposForUser(@Path("user") String user);
 
-    @GET("secretInfo")
-    Call<ResponseBody> getSecret(@Header("Authotization") String authToken);
+    @POST("/search/repositories")
+    Call<List<Repository>> searchRepos(@Field("q") String query);
 
-    @POST("user/repos")
-    @FormUrlEncoded
-    Call<String> createNewRepo(
-            @Field("name") String name,
-            @Field("auto_init") String autoInit,
-            @Field("private") String confidentiality,
-            @Field("gitignore_template") String gitignore_template
+    @POST("/user/repos")
+    Call<Repository> createNewRepo(
+            @Body Repository repository
     );
 
 }

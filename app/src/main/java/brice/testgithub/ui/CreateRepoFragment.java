@@ -15,8 +15,10 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.List;
 
 import brice.testgithub.Model.AccessToken;
+import brice.testgithub.Model.Repository;
 import brice.testgithub.Model.TokenStore;
 import brice.testgithub.R;
 import brice.testgithub.service.GitHubClient;
@@ -55,27 +57,22 @@ public class CreateRepoFragment extends Fragment {
 
         Retrofit retrofit = builder.build();
 
-        GitHubClient client = retrofit.create(GitHubClient.class);
-
-        final Call<String> createNewRepo = client.createNewRepo(
-                "testcreation",
-                "true",
-                "true",
-                "nanoc"
-        );
+        final GitHubClient client = retrofit.create(GitHubClient.class);
 
 
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                createNewRepo.enqueue(new Callback<String>() {
+                Repository repository = new Repository("creationTest");
+                client.createNewRepo(repository).enqueue(new Callback<Repository>() {
+
                     @Override
-                    public void onResponse(Call<String> call, Response<String> response) {
-                        Toast.makeText(getContext(),"repo created", Toast.LENGTH_SHORT).show();
+                    public void onResponse(Call<Repository> call, Response<Repository> response) {
+                        response.body();
                     }
 
                     @Override
-                    public void onFailure(Call<String> call, Throwable t) {
+                    public void onFailure(Call<Repository> call, Throwable t) {
 
                     }
                 });
