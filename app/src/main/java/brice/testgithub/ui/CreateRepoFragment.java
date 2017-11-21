@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.List;
 
 import brice.testgithub.Model.AccessToken;
+import brice.testgithub.Model.Contributor;
 import brice.testgithub.Model.Repository;
 import brice.testgithub.Model.TokenStore;
 import brice.testgithub.R;
@@ -57,14 +58,17 @@ public class CreateRepoFragment extends Fragment {
 
         Retrofit retrofit = builder.build();
 
-        final GitHubClient client = retrofit.create(GitHubClient.class);
+        GitHubClient client = retrofit.create(GitHubClient.class);
+
+        Repository repository = new Repository("testDelete");
+        final Call<Repository> createRepo = client.createNewRepo(repository);
 
 
         btnTest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Repository repository = new Repository("creationTest");
-                client.createNewRepo(repository).enqueue(new Callback<Repository>() {
+
+                createRepo.enqueue(new Callback<Repository>() {
 
                     @Override
                     public void onResponse(Call<Repository> call, Response<Repository> response) {
@@ -76,6 +80,7 @@ public class CreateRepoFragment extends Fragment {
 
                     }
                 });
+
             }
         });
 

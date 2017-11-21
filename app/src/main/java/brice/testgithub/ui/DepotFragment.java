@@ -40,6 +40,8 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
 
+    GitHubClient  client = null;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.depot_fragment,container,false);
@@ -68,7 +70,19 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         }
         switch (item.getItemId()) {
             case R.id.action_delete:
-                Toast.makeText(getContext(),R.string.action_delete,Toast.LENGTH_SHORT).show();
+                if (client != null){
+                    (client.deleteRepository("ThomBrice", "testDelete")).enqueue(new Callback<String>() {
+                        @Override
+                        public void onResponse(Call<String> call, Response<String> response) {
+                            response.body();
+                        }
+
+                        @Override
+                        public void onFailure(Call<String> call, Throwable t) {
+
+                        }
+                    });
+                }
                 break;
             case R.id.action_rename:
                 Toast.makeText(getContext(),R.string.action_rename,Toast.LENGTH_SHORT).show();
@@ -101,7 +115,7 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         Retrofit retrofit = builder.build();
 
-        GitHubClient client = retrofit.create(GitHubClient.class);
+        client = retrofit.create(GitHubClient.class);
         Call<List<Repository>> call = client.reposForUser("ThomBrice");
 
         call.enqueue(new Callback<List<Repository>>() {
