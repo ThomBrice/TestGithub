@@ -13,6 +13,7 @@ import brice.testgithub.R;
 
 public class TokenStore {
 
+
     //preferences key
     private static final String KEY = "token";
 
