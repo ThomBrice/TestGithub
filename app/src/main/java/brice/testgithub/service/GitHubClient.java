@@ -47,7 +47,7 @@ public interface GitHubClient {
     );
 
     @POST("/user/repos")  // create a new repo
-    Call<Repository> createNewRepo(
+    Observable<Repository> createNewRepo(
             @Body Repository repository
     );
 

@@ -27,4 +27,15 @@
     <string name="delete">Supprimer</string>
     <string name="cancel">Annuler</string>
     <string name="error">Une erreur s\'est produite lors de la suppression du repertoire </string>
+
+    <!-- create repo fragment -->
+    <string name="optional">Optionnel</string>
+    <string name="compulsory">Obligatoire</string>
+    <string name="name">Nom : </string>
+    <string name="description">Description : </string>
+    <string name="homepage">Page Web : </string>
+    <string name="create">Ajouter à mon dépôt</string>
+    <string name="miss_name">Un répertoire doit au moins avoir un nom</string>
+    <string name="creation_successful">Le répertoire a été créé</string>
+    <string name="creation_unsuccessful">"Un problème a eu lieu</string>
 </resources>

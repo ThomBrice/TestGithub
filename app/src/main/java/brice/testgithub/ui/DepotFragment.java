@@ -62,36 +62,19 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         client = GithubService.getGithubClient(TokenStore.getInstance(getContext()).getToken());
 
-        getListRepositories();
-
         return view;
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        onRefresh();
+    }
+
+    @Override
     public boolean onContextItemSelected(MenuItem item) {
-        int position = -1;
-        try {
-            position = ((RepositoryAdapter)adapter).getPosition();
-        } catch (Exception e) {
-            return super.onContextItemSelected(item);
-        }
         switch (item.getItemId()) {
             case R.id.action_delete:
-/*
-                if (client != null){
-                    (client.deleteRepository("ThomBrice", "testDelete")).enqueue(new Callback<String>() {
-                        @Override
-                        public void onResponse(Call<String> call, Response<String> response) {
-                            response.body();
-                        }
-
-                        @Override
-                        public void onFailure(Call<String> call, Throwable t) {
-
-                        }
-                    });
-                }
-*/
 
                 Intent intent = new Intent(getContext(), DialogDeleteActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
@@ -112,7 +95,7 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         swipeRefreshLayout.setRefreshing(false);
     }
 
-    public void getListRepositories(){
+    private void getListRepositories(){
 
         Observable<List<Repository>> observable = (client).getUserRepos();
 
