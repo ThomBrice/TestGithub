@@ -6,16 +6,12 @@
 package brice.testgithub.utils;
 
 
-import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import java.util.List;
@@ -66,6 +62,10 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
         return position;
     }
 
+    public Repository getItem(){
+        return list.get(position);
+    }
+
     public void setPosition(int position) {
         this.position = position;
     }
@@ -74,17 +74,20 @@ public class RepositoryAdapter extends RecyclerView.Adapter<RepositoryAdapter.Vi
 
         private TextView name_textView;
         private TextView condidentiality_textView;
+        private TextView description;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            name_textView = (TextView) itemView.findViewById(R.id.repo_name);
+            name_textView = (TextView) itemView.findViewById(R.id.repo_full_name);
             condidentiality_textView = (TextView) itemView.findViewById(R.id.confidential_state);
+            description = (TextView) itemView.findViewById(R.id.description);
             itemView.setOnCreateContextMenuListener((View.OnCreateContextMenuListener) this);
         }
 
         public void bind(Repository repository){
-            name_textView.setText(repository.getName());
-            condidentiality_textView.setText(String.valueOf(repository.isConfidential()));
+            name_textView.setText(repository.getFullName());
+            condidentiality_textView.setText(String.valueOf(repository.getPrivate()));
+            description.setText(repository.getDescription());
         }
 
         @Override

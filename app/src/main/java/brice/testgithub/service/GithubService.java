@@ -23,19 +23,12 @@ public class GithubService {
     public static final String SCOPE = "repo,delete_repo,user";
     public static final String BASE_URL_TOKEN = "https://github.com/";
 
-    private static Retrofit.Builder builder =
-            new Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()));
+    private static Retrofit retrofit = null;
+    private static OkHttpClient.Builder httpClient = null;
 
-    private static Retrofit retrofit = builder.build();
-
-    private static OkHttpClient.Builder httpClient =
-            new OkHttpClient.Builder();
-
-    public static <S> S createService(Class<S> serviceClass, final String token){
-        if (token != null){
+    private static Retrofit getClient(String baseUrl, final String token){
+        if (retrofit == null){
+            httpClient = new OkHttpClient.Builder();
             httpClient.addInterceptor(new Interceptor() {
                 @Override
                 public okhttp3.Response intercept(Chain chain) throws IOException {
@@ -44,9 +37,18 @@ public class GithubService {
                     return chain.proceed(newRequest.build());
                 }
             });
-            builder.client(httpClient.build());
-            retrofit = builder.build();
+
+            retrofit = new Retrofit.Builder()
+                    .baseUrl(baseUrl)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
+                    .client(httpClient.build())
+                    .build();
         }
-        return retrofit.create(serviceClass);
+        return retrofit;
+    }
+
+    public static GitHubClient getGithubClient(String token){
+        return getClient(BASE_URL,token).create(GitHubClient.class);
     }
 }

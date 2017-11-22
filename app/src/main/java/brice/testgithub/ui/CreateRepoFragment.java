@@ -30,9 +30,10 @@ public class CreateRepoFragment extends Fragment {
         View view = inflater.inflate(R.layout.creat_repo_fragment,container,false);
         btnTest = (Button) view.findViewById(R.id.btnTab2);
 
-        GitHubClient client = GithubService.createService(GitHubClient.class ,TokenStore.getInstance(getContext()).getToken());
+        GitHubClient client = GithubService.getGithubClient(TokenStore.getInstance(getContext()).getToken());
 
-        Repository repository = new Repository("testDelete");
+        Repository repository = new Repository();
+        repository.setName("deleteRepertoire");
         final Call<Repository> createRepo = client.createNewRepo(repository);
 
 
@@ -55,7 +56,6 @@ public class CreateRepoFragment extends Fragment {
 
             }
         });
-
         return view;
     }
 }

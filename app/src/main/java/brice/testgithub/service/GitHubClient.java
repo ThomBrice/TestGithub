@@ -39,7 +39,7 @@ public interface GitHubClient {
     Call<User> getUserInfo();
 
     @GET("/user/repos")   // get all user's repos (thanks to auhtorization token)
-    Call<List<Repository>> getUserRepos();
+    Observable<List<Repository>> getUserRepos();
 
     @GET("/search/repositories")  //search for repo(s)
     Call<List<Repository>> searchRepos(
@@ -51,8 +51,8 @@ public interface GitHubClient {
             @Body Repository repository
     );
 
-    @DELETE("/repos/{user}/{repo}") //delete a repo
-    Call<String> deleteRepository(
+    @DELETE("repos/{user}/{repo}") //delete a repo
+    Observable<String> deleteRepository(
             @Path("user") String user,
             @Path("repo") String repo
     );

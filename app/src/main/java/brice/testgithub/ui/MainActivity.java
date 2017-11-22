@@ -16,8 +16,14 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import brice.testgithub.Model.TokenStore;
 import brice.testgithub.R;
+import brice.testgithub.service.GitHubClient;
+import brice.testgithub.service.GithubService;
 import brice.testgithub.utils.SectionPageAdapter;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 

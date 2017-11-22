@@ -10,7 +10,9 @@
     <string name="preference_file_key">brice.testgithub.file</string>
         completions."
 
+    <!-- keys intent parameters values -->
     <string name="search_value">search_value</string>
+    <string name="delete_repo">delete_repo</string>
 
     <string name="title_frag_depot">Mon dépôt</string>
     <string name="title_frag_create">Créer un repo</string>
@@ -20,4 +22,9 @@
 
     <string name="item_confidentiality_text">Privé : </string>
 
+    <!-- AlertDeleteDialog -->
+    <string name="get_id">Nous avons besoin de votre identifiant pour confirmer la suppression</string>
+    <string name="delete">Supprimer</string>
+    <string name="cancel">Annuler</string>
+    <string name="error">Une erreur s\'est produite lors de la suppression du repertoire </string>
 </resources>
