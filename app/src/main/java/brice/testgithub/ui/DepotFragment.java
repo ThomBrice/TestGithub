@@ -5,6 +5,7 @@
 
 package brice.testgithub.ui;
 
+import android.database.Observable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -96,7 +97,7 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     public void getListRepositories(){
 
-        Call<List<Repository>> call = client.reposForUser("ThomBrice");
+        Call<List<Repository>> call = client.getUserRepos();
 
         call.enqueue(new Callback<List<Repository>>() {
             @Override
@@ -113,16 +114,5 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 Toast.makeText(getActivity(),"error", Toast.LENGTH_SHORT).show();
             }
         });
-
-    }
-
-    private void handleResponse(List<Repository> repositories){
-        adapter = new RepositoryAdapter(repositories);
-        recyclerView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
-    private void handleError(Throwable error){
-        Toast.makeText(getContext(),"Error", Toast.LENGTH_SHORT).show();
     }
 }

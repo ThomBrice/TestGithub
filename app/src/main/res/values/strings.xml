@@ -12,5 +12,7 @@
 
     <string name="search_value">search_value</string>
 
+    <string name="title_frag_depot">Mon dépôt</string>
+    <string name="title_frag_create">Créer un repo</string>
 
 </resources>

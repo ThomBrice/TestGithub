@@ -11,6 +11,7 @@ import java.util.List;
 import brice.testgithub.Model.AccessToken;
 import brice.testgithub.Model.Contributor;
 import brice.testgithub.Model.Repository;
+import brice.testgithub.Model.User;
 import io.reactivex.Observable;
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -34,10 +35,11 @@ public interface GitHubClient {
             @Field("code") String code
     );
 
-    @GET("/users/{user}/repos")   // get all user's repos
-    Call<List<Repository>> reposForUser(
-            @Path("user") String user
-    );
+    @GET("/user")
+    Call<User> getUserInfo();
+
+    @GET("/user/repos")   // get all user's repos (thanks to auhtorization token)
+    Call<List<Repository>> getUserRepos();
 
     @GET("/search/repositories")  //search for repo(s)
     Call<List<Repository>> searchRepos(

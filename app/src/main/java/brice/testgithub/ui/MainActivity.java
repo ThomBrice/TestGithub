@@ -21,16 +21,14 @@ import brice.testgithub.utils.SectionPageAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private SectionPageAdapter sectionPageAdapter;
     private ViewPager viewPager;
-    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        sectionPageAdapter = new SectionPageAdapter(getSupportFragmentManager());
+        new SectionPageAdapter(getSupportFragmentManager());
 
         //Set up the ViewPager with the sections adapter
         viewPager = (ViewPager) findViewById(R.id.pager);
@@ -41,13 +39,12 @@ public class MainActivity extends AppCompatActivity {
         
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        
     }
 
     private void setupViewPager(ViewPager viewPager){
         SectionPageAdapter adapter = new SectionPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new DepotFragment(), "MY REPOS");
-        adapter.addFragment(new CreateRepoFragment(), "CREATE REPO");
+        adapter.addFragment(new DepotFragment(), getResources().getString(R.string.title_frag_depot));
+        adapter.addFragment(new CreateRepoFragment(), getResources().getString(R.string.title_frag_create));
         viewPager.setAdapter(adapter);
     }
 
