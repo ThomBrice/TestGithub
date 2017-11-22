@@ -13,12 +13,11 @@ import brice.testgithub.R;
 
 public class TokenStore {
 
-
     //preferences key
     private static final String KEY = "token";
 
     //instance of the token
-    private static TokenStore instance;
+    private static TokenStore instance = null;
 
     //sharedPreferences to register the token value
     private SharedPreferences sharedPreferences;

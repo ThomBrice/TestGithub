@@ -16,22 +16,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import java.io.IOException;
 import java.util.List;
 
 import brice.testgithub.Model.Repository;
 import brice.testgithub.Model.TokenStore;
 import brice.testgithub.R;
 import brice.testgithub.service.GitHubClient;
+import brice.testgithub.service.GithubService;
 import brice.testgithub.utils.RepositoryAdapter;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
@@ -40,7 +35,7 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
 
-    GitHubClient  client = null;
+    private GitHubClient  client = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +49,8 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
+
+        client = GithubService.createService(GitHubClient.class ,TokenStore.getInstance(getContext()).getToken());
 
         getListRepositories();
 
@@ -98,24 +95,7 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     }
 
     public void getListRepositories(){
-        OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder();
-        okHttpBuilder.addInterceptor(new Interceptor() {
-            @Override
-            public okhttp3.Response intercept(Chain chain) throws IOException {
-                Request request = chain.request();
-                Request.Builder newRequest = request.newBuilder().addHeader("Authorization", "Bearer " + TokenStore.getInstance(getContext()).getToken());
-                return chain.proceed(newRequest.build());
-            }
-        });
 
-        Retrofit.Builder builder = new Retrofit.Builder()
-                .client(okHttpBuilder.build())
-                .baseUrl(GitHubClient.endPoint)
-                .addConverterFactory(GsonConverterFactory.create());
-
-        Retrofit retrofit = builder.build();
-
-        client = retrofit.create(GitHubClient.class);
         Call<List<Repository>> call = client.reposForUser("ThomBrice");
 
         call.enqueue(new Callback<List<Repository>>() {
@@ -133,5 +113,16 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                 Toast.makeText(getActivity(),"error", Toast.LENGTH_SHORT).show();
             }
         });
+
+    }
+
+    private void handleResponse(List<Repository> repositories){
+        adapter = new RepositoryAdapter(repositories);
+        recyclerView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    private void handleError(Throwable error){
+        Toast.makeText(getContext(),"Error", Toast.LENGTH_SHORT).show();
     }
 }

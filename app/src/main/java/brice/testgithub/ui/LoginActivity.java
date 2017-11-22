@@ -17,6 +17,7 @@ import brice.testgithub.Model.AccessToken;
 import brice.testgithub.Model.TokenStore;
 import brice.testgithub.R;
 import brice.testgithub.service.GitHubClient;
+import brice.testgithub.service.GithubService;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -42,21 +43,22 @@ public class LoginActivity extends AppCompatActivity {
 
         Uri uri = getIntent().getData();
 
-        if (uri != null && uri.toString().startsWith(GitHubClient.redirectUri)){
+        if (uri != null && uri.toString().startsWith(GithubService.REDIRECTURI)){
             String code = uri.getQueryParameter("code");
 
             if (code != null){
                 //get the token
                 Retrofit.Builder builder = new Retrofit.Builder()
-                        .baseUrl("https://github.com/")
+                        .baseUrl(GithubService.BASE_URL_TOKEN)
                         .addConverterFactory(GsonConverterFactory.create()); //because response is in json and we want to create a java object
 
                 Retrofit retrofit= builder.build();
 
                 GitHubClient client = retrofit.create(GitHubClient.class);
+                
                 Call<AccessToken> accessTokenCall = client.getAccessToken(
-                        GitHubClient.clientId,
-                        GitHubClient.clientSecret,
+                        GithubService.CLIENTID,
+                        GithubService.CLIENTSECRET,
                         code
                 );
 
@@ -83,9 +85,9 @@ public class LoginActivity extends AppCompatActivity {
                 Intent.ACTION_VIEW,
                 Uri.parse("https://github.com" +
                         "/login/oauth/authorize" +
-                        "?client_id=" + GitHubClient.clientId +
-                        "&scope=" + GitHubClient.scope+
-                        "&redirect_uri=" + GitHubClient.redirectUri));
+                        "?client_id=" + GithubService.CLIENTID +
+                        "&scope=" + GithubService.SCOPE+
+                        "&redirect_uri=" + GithubService.REDIRECTURI));
         startActivity(intent);
     }
 

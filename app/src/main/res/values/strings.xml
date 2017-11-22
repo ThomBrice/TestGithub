@@ -2,12 +2,15 @@
     <string name="app_name">Test Github</string>
     <string name="action_delete">Delete</string>
     <string name="action_rename">Rename</string>
+    <string name="action_search">Search Repository</string>
     <string name="section_format">Hello World from section: %1$d</string>
     <string name="title_activity_login2">Sign in</string>
 
     <!-- sharedPreference file key -->
     <string name="preference_file_key">brice.testgithub.file</string>
         completions."
+
+    <string name="search_value">search_value</string>
 
 
 </resources>
