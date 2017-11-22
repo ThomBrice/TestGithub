@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Test Github</string>
+    <string name="app_name">Github Viewer</string>
     <string name="action_delete">Delete</string>
     <string name="action_rename">Rename</string>
     <string name="action_search">Search Repository</string>
@@ -14,5 +14,10 @@
 
     <string name="title_frag_depot">Mon dépôt</string>
     <string name="title_frag_create">Créer un repo</string>
+
+    <string name="login_button">Connexion</string>
+    <string name="login_explanation">Vous devez vous identifier via le site Github pour donner l\'autorisation à cette application d\'accéder à vos données afin de les afficher.</string>
+
+    <string name="item_confidentiality_text">Privé : </string>
 
 </resources>
