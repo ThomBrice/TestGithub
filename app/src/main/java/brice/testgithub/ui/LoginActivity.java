@@ -10,6 +10,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import brice.testgithub.Model.AccessToken;
 import brice.testgithub.Model.TokenStore;
@@ -69,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<AccessToken> call, Throwable t) {
-
+                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.error_request),Toast.LENGTH_SHORT).show();
                     }
                 });
             } else if (uri.getQueryParameter("error") != null){

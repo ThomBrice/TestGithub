@@ -21,6 +21,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -51,6 +52,11 @@ public interface GitHubClient {
     Observable<Repository> createNewRepo(
             @Body Repository repository
     );
+
+    @PATCH("repos/{user}/{repo}")  //editRepo
+    Observable<Repository> editRepo(
+            @Path("user") String user,
+            @Path("repo") Repository repository);
 
     @DELETE("repos/{user}/{repo}") //delete a repo
     Observable<String> deleteRepository(

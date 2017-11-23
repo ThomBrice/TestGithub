@@ -16,10 +16,8 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import org.reactivestreams.Subscriber;
-import org.reactivestreams.Subscription;
 
 import java.util.List;
 
@@ -34,9 +32,6 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener{
 
@@ -73,17 +68,21 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
+        Intent intent;
+
         switch (item.getItemId()) {
             case R.id.action_delete:
-
-                Intent intent = new Intent(getContext(), DialogDeleteActivity.class);
+                intent = new Intent(getContext(), DialogDeleteActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                intent.putExtra(String.valueOf(R.string.delete_repo), ((RepositoryAdapter) adapter).getItem().getName());
+                intent.putExtra(String.valueOf(R.string.repo_name), ((RepositoryAdapter) adapter).getItem().getName());
                 startActivity(intent);
-
                 break;
             case R.id.action_rename:
-                Toast.makeText(getContext(),R.string.action_rename,Toast.LENGTH_SHORT).show();
+                intent = new Intent(getContext(), DialogEditActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra(String.valueOf(R.string.repo_name), ((RepositoryAdapter) adapter).getItem().getName());
+                startActivity(intent);
+                onRefresh();
                 break;
         }
         return super.onContextItemSelected(item);
@@ -117,7 +116,7 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
                     @Override
                     public void onError(Throwable t) {
-
+                        Toast.makeText(getContext(),getResources().getString(R.string.error_request),Toast.LENGTH_SHORT).show();
                     }
 
                     @Override

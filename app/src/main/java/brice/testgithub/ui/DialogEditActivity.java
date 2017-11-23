@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import brice.testgithub.Model.Repository;
 import brice.testgithub.Model.TokenStore;
 import brice.testgithub.R;
 import brice.testgithub.service.GitHubClient;
@@ -22,59 +23,57 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.HttpException;
 
-public class DialogDeleteActivity extends Activity {
+public class DialogEditActivity extends Activity {
 
-    private String user;
     private String repositoryName;
-
     private GitHubClient  client = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_dialog_delete);
+
+        setContentView(R.layout.activity_dialog_edit);
         client = GithubService.getGithubClient(TokenStore.getInstance(this).getToken());
 
         Intent intent = getIntent();
         repositoryName = intent.getStringExtra(String.valueOf(R.string.repo_name));
+
+        ((EditText) findViewById(R.id.editText_name)).setText(repositoryName);
     }
 
-    public void deleteClicked(View v) {
-        EditText editText = (EditText) findViewById(R.id.login_user);
-        user = editText.getText().toString();
+    public void editClicked(View view){
+        Repository repository = new Repository();
+        repository.setDescription(((EditText)findViewById(R.id.editText_description)).getText().toString());
+        repository.setHomepage(((EditText)findViewById(R.id.editText_homepage)).getText().toString());
+        repository.setName(((EditText)findViewById(R.id.editText_name)).getText().toString());
+        String user = ((EditText)findViewById(R.id.login_user)).getText().toString();
 
-        Observable<String> observable = (client).deleteRepository(user,repositoryName);
+        Observable<Repository> observable = client.editRepo(user,repository);
 
         observable.subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .unsubscribeOn(Schedulers.io())
-                .subscribe(new Observer<String>(){
+                .subscribe(new Observer<Repository>(){
                     @Override
                     public void onSubscribe(Disposable d) {
                     }
 
                     @Override
-                    public void onNext(String value) {
+                    public void onNext(Repository repository) {
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        if (t.getMessage().equals("Null is not a valid element")){
-                            finish();
-                        } else {
-                            Toast.makeText(getApplicationContext(),getResources().getString(R.string.error_request),Toast.LENGTH_SHORT).show();
-                        }
+                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.error_request),Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onComplete() {
+                        finish();
                     }
                 });
-    }
-
-    public void cancelClicked(View v){
         finish();
+
     }
 }

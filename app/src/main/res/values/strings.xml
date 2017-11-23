@@ -1,17 +1,18 @@
 <resources>
     <string name="app_name">Github Viewer</string>
     <string name="action_delete">Supprimer</string>
-    <string name="action_rename">Renommer</string>
+    <string name="action_rename">Modifier</string>
     <string name="action_search">Search Repository</string>
     <string name="action_logout">Log Out</string>
+    <string name="error_request">Votre requête n\'a pas pu aboutir</string>
 
     <!-- sharedPreference file key -->
     <string name="preference_file_key">brice.testgithub.file</string>
-        completions."
+    completions."
 
     <!-- keys intent parameters values -->
     <string name="search_value">search_value</string>
-    <string name="delete_repo">delete_repo</string>
+    <string name="repo_name">delete_repo</string>
 
     <string name="title_frag_depot">Mon dépôt</string>
     <string name="title_frag_create">Créer un repo</string>
@@ -22,7 +23,7 @@
     <string name="item_confidentiality_text">Privé : </string>
 
     <!-- AlertDeleteDialog -->
-    <string name="get_id">Nous avons besoin de votre identifiant pour confirmer la suppression</string>
+    <string name="get_id">Nous avons besoin de votre login pour confirmer la suppression</string>
     <string name="delete">Supprimer</string>
     <string name="cancel">Annuler</string>
     <string name="error">Une erreur s\'est produite lors de la suppression du repertoire </string>
@@ -40,4 +41,9 @@
 
     <!-- search Activity -->
     <string name="nb_repos">Résultat : </string>
+    <string name="title_activity_dialog_edit">DialogEditActivity</string>
+
+    <!-- AlertDialogEdit -->
+    <string name="edit_button">Modifer le répertoire</string>
+    <string name="login">Login : </string>
 </resources>

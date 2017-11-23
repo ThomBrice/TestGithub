@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import java.util.List;
@@ -38,10 +39,13 @@ public class CreateRepoFragment extends Fragment {
     private GitHubClient client;
     private Repository repository;
     private EditText nameEditText,descriptionEditText,homepageEditText;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.creat_repo_fragment,container,false);
+
+        progressBar = (ProgressBar) view.findViewById(R.id.load_progress);
 
         nameEditText = (EditText) view.findViewById(R.id.editText_name);
         descriptionEditText = (EditText) view.findViewById(R.id.editText_description);
@@ -60,8 +64,10 @@ public class CreateRepoFragment extends Fragment {
     }
 
     public void createClicked(){
+        progressBar.setVisibility(View.VISIBLE);
         if ((nameEditText.getText().toString()).equals("")){
             Toast.makeText(getContext(),getResources().getString(R.string.miss_name),Toast.LENGTH_SHORT).show();
+            progressBar.setVisibility(View.GONE);
         } else {
             repository = new Repository();
             repository.setName(nameEditText.getText().toString());
@@ -80,21 +86,20 @@ public class CreateRepoFragment extends Fragment {
 
                         @Override
                         public void onNext(Repository repository) {
-                            Log.e("eddd","Next");
                             Toast.makeText(getContext(),getResources().getString(R.string.creation_successful),Toast.LENGTH_SHORT).show();
                         }
 
                         @Override
                         public void onError(Throwable t) {
-                            Toast.makeText(getContext(),getResources().getString(R.string.creation_unsuccessful),Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getContext(),getResources().getString(R.string.error_request),Toast.LENGTH_SHORT).show();
+                            progressBar.setVisibility(View.GONE);
                         }
 
                         @Override
                         public void onComplete() {
-                            Log.e("eddd","Complete");
+                            progressBar.setVisibility(View.GONE);
                         }
                     });
         }
-
     }
 }

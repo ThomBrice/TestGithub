@@ -86,18 +86,16 @@ public class SearchActivity extends AppCompatActivity {
                         adapter = new RepositoryAdapter(answer.getRepositories());
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
-                        Log.e("errr","onNext");
                     }
 
                     @Override
                     public void onError(Throwable t) {
-                        Log.e("errr","onError" + t);
+                        Toast.makeText(getApplicationContext(),getResources().getString(R.string.error_request),Toast.LENGTH_SHORT).show();
 
                     }
 
                     @Override
                     public void onComplete() {
-                        Log.e("errr","onComplete");
                     }
                 });
     }
