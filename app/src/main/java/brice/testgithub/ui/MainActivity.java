@@ -67,13 +67,25 @@ public class MainActivity extends AppCompatActivity {
             public boolean onQueryTextSubmit(String query) {
                 invalidateOptionsMenu();
                 Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                intent.putExtra(String.valueOf(R.string.search_value), query);
+                intent.putExtra(getResources().getString(R.string.search_value), query);
                 startActivity(intent);
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
+        MenuItem logOut = menu.findItem(R.id.action_logOut);
+        logOut.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                TokenStore.getInstance(getApplicationContext()).clearTokenStore();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
                 return false;
             }
         });

@@ -42,4 +42,12 @@ public class TokenStore {
     public void saveToken(String token){
         sharedPreferences.edit().putString(KEY, token).apply();
     }
+
+    public void clearTokenStore(){
+        if (instance != null){
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.clear();
+            editor.commit();
+        }
+    }
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import brice.testgithub.Model.AccessToken;
 import brice.testgithub.Model.Contributor;
 import brice.testgithub.Model.Repository;
+import brice.testgithub.Model.SearchAnswer;
 import brice.testgithub.Model.User;
 import io.reactivex.Observable;
 import retrofit2.Call;
@@ -42,7 +43,7 @@ public interface GitHubClient {
     Observable<List<Repository>> getUserRepos();
 
     @GET("/search/repositories")  //search for repo(s)
-    Call<List<Repository>> searchRepos(
+    Observable<SearchAnswer> searchRepos(
             @Query("q") String query
     );
 
