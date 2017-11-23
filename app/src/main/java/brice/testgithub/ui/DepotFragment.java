@@ -39,6 +39,7 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private SwipeRefreshLayout swipeRefreshLayout;
+    private ProgressBar progressBar;
 
     private GitHubClient  client = null;
 
@@ -54,6 +55,9 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
 
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.swipeRefreshLayout);
         swipeRefreshLayout.setOnRefreshListener(this);
+
+        progressBar = ((ProgressBar)view.findViewById(R.id.load_progress));
+        progressBar.setVisibility(View.VISIBLE);
 
         client = GithubService.getGithubClient(TokenStore.getInstance(getContext()).getToken());
 
@@ -112,11 +116,13 @@ public class DepotFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                         adapter = new RepositoryAdapter(repositories);
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(Throwable t) {
                         Toast.makeText(getContext(),getResources().getString(R.string.error_request),Toast.LENGTH_SHORT).show();
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
