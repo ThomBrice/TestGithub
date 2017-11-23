@@ -22,8 +22,6 @@ import brice.testgithub.utils.SectionPageAdapter;
 
 public class MainActivity extends AppCompatActivity {
 
-    private ViewPager viewPager;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         new SectionPageAdapter(getSupportFragmentManager());
 
         //Set up the ViewPager with the sections adapter
-        viewPager = (ViewPager) findViewById(R.id.pager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.pager);
         setupViewPager(viewPager);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);

@@ -8,36 +8,27 @@ package brice.testgithub.ui;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.Toast;
-
-import java.util.List;
 
 import brice.testgithub.Model.Repository;
 import brice.testgithub.Model.TokenStore;
 import brice.testgithub.R;
 import brice.testgithub.service.GitHubClient;
 import brice.testgithub.service.GithubService;
-import brice.testgithub.utils.RepositoryAdapter;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CreateRepoFragment extends Fragment {
 
     private GitHubClient client;
-    private Repository repository;
     private EditText nameEditText,descriptionEditText,homepageEditText;
     private ProgressBar progressBar;
 
@@ -69,7 +60,7 @@ public class CreateRepoFragment extends Fragment {
             Toast.makeText(getContext(),getResources().getString(R.string.miss_name),Toast.LENGTH_SHORT).show();
             progressBar.setVisibility(View.GONE);
         } else {
-            repository = new Repository();
+            Repository repository = new Repository();
             repository.setName(nameEditText.getText().toString());
             repository.setHomepage(homepageEditText.getText().toString());
             repository.setDescription(descriptionEditText.getText().toString());

@@ -8,7 +8,6 @@ package brice.testgithub.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -22,11 +21,9 @@ import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.schedulers.Schedulers;
-import retrofit2.HttpException;
 
 public class DialogDeleteActivity extends Activity {
 
-    private String user;
     private String repositoryName;
 
     private GitHubClient  client = null;
@@ -43,7 +40,7 @@ public class DialogDeleteActivity extends Activity {
 
     public void deleteClicked(View v) {
         EditText editText = (EditText) findViewById(R.id.login_user);
-        user = editText.getText().toString();
+        String user = editText.getText().toString();
 
         Observable<String> observable = (client).deleteRepository(user,repositoryName);
 

@@ -8,7 +8,6 @@ package brice.testgithub.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -26,7 +25,6 @@ import io.reactivex.schedulers.Schedulers;
 
 public class DialogEditActivity extends Activity {
 
-    private String repositoryName;
     private GitHubClient  client = null;
 
     @Override
@@ -37,7 +35,7 @@ public class DialogEditActivity extends Activity {
         client = GithubService.getGithubClient(TokenStore.getInstance(this).getToken());
 
         Intent intent = getIntent();
-        repositoryName = intent.getStringExtra(String.valueOf(R.string.repo_name));
+        String repositoryName = intent.getStringExtra(String.valueOf(R.string.repo_name));
 
         ((EditText) findViewById(R.id.editText_name)).setText(repositoryName);
     }
