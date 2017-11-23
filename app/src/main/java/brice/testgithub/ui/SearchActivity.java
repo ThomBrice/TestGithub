@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +44,7 @@ public class SearchActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private TextView resultTextView;
+    private ProgressBar progressBar;
 
     private GitHubClient client = null;
 
@@ -58,6 +60,9 @@ public class SearchActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         resultTextView = (TextView) findViewById(R.id.result_textView);
+
+        progressBar = ((ProgressBar) findViewById(R.id.load_progress));
+        progressBar.setVisibility(View.VISIBLE);
 
         client = GithubService.getGithubClient(TokenStore.getInstance(getApplicationContext()).getToken());
 
@@ -86,12 +91,13 @@ public class SearchActivity extends AppCompatActivity {
                         adapter = new RepositoryAdapter(answer.getRepositories());
                         recyclerView.setAdapter(adapter);
                         adapter.notifyDataSetChanged();
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError(Throwable t) {
                         Toast.makeText(getApplicationContext(),getResources().getString(R.string.error_request),Toast.LENGTH_SHORT).show();
-
+                        progressBar.setVisibility(View.GONE);
                     }
 
                     @Override
